@@ -1,0 +1,32 @@
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: complaints-mongo-depl
+ spec:
+   replicas: 1
+   selector:
+     matchLabels:
+       app: complaints-mongo
+   template:
+     metadata:
+       labels:
+         app: complaints-mongo
+     spec:
+       containers:
+       - name: complaints-mongo
+         image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: complaints-mongo-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: complaints-mongo
+  ports:
+  - name: db-mongo
+    protocol: TCP
+    port: 27017
+    targetPort: 27017  
+ 

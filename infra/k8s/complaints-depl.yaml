@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complaints-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: complaints
+  template:
+    metadata:
+      labels:
+        app: complaints
+    spec:
+      containers:
+      - name: complaints
+        image: odainmair/abc-company/complaints
+        env:
+          - name: MONGO_URI
+            value: 'mongodb://complaints-mongo-srv:27017/complaints'
+          - name: JWT_KEY
+            valueFrom:
+                  secretKeyRef:
+                      name: jwt-secret
+                      key: JWT_KEY
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: complaints-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: complaints
+  ports:
+  - name: complaints
+    port: 3000
+    targetPort: 3000
+  
