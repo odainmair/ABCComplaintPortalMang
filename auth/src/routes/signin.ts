@@ -18,7 +18,7 @@ validateRequestMW
 
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
-    console.log('-- existing User'+JSON.stringify(existingUser));
+    console.log('-- existing User :'+JSON.stringify(existingUser));
     if (!existingUser) {
         throw new BadRequestError('Invaild Credentials');
     }
